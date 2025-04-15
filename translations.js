@@ -1,0 +1,53 @@
+const translations = {
+    'fr': {
+        title: 'Email Finder',
+        subtitle: 'Trouvez facilement des adresses email professionnelles',
+        search: 'Recherche',
+        searchPlaceholder: 'Noms séparés par des virgules @ domaine (ex: Jean Dupont, Marie Martin @ entreprise.com)',
+        searchHint: 'Entrez les noms séparés par des virgules, suivis du symbole @ et du domaine de l\'entreprise',
+        searchButton: 'Rechercher',
+        results: 'Résultats',
+        noResults: 'Entrez des noms et un domaine pour générer les adresses email possibles',
+        invalidFormat: 'Format invalide. Utilisez le format: "Noms @ domaine"',
+        copyEmails: 'Copier les emails',
+        copyAllEmails: 'Copier tous les emails',
+        copied: 'Copié !',
+        copyError: 'Erreur de copie',
+        openSource: 'Projet Open Source',
+        copyright: '© 2025 Email Finder'
+    },
+    'en': {
+        title: 'Email Finder',
+        subtitle: 'Easily find professional email addresses',
+        search: 'Search',
+        searchPlaceholder: 'Names separated by commas @ domain (ex: John Doe, Mary Smith @ company.com)',
+        searchHint: 'Enter names separated by commas, followed by the @ symbol and the company domain',
+        searchButton: 'Search',
+        results: 'Results',
+        noResults: 'Enter names and a domain to generate possible email addresses',
+        invalidFormat: 'Invalid format. Use the format: "Names @ domain"',
+        copyEmails: 'Copy emails',
+        copyAllEmails: 'Copy all emails',
+        copied: 'Copied!',
+        copyError: 'Copy error',
+        openSource: 'Open Source Project',
+        copyright: '© 2025 Email Finder'
+    },
+    'es': {
+        title: 'Email Finder',
+        subtitle: 'Encuentra fácilmente direcciones de correo electrónico profesionales',
+        search: 'Búsqueda',
+        searchPlaceholder: 'Nombres separados por comas @ dominio (ej: Juan Pérez, María García @ empresa.com)',
+        searchHint: 'Ingrese nombres separados por comas, seguidos del símbolo @ y el dominio de la empresa',
+        searchButton: 'Buscar',
+        results: 'Resultados',
+        noResults: 'Ingrese nombres y un dominio para generar posibles direcciones de correo electrónico',
+        invalidFormat: 'Formato inválido. Use el formato: "Nombres @ dominio"',
+        copyEmails: 'Copiar correos',
+        copyAllEmails: 'Copiar todos los correos',
+        copied: '¡Copiado!',
+        copyError: 'Error al copiar',
+        openSource: 'Proyecto de Código Abierto',
+        copyright: '© 2025 Email Finder'
+    }
+}; 
