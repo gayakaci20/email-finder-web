@@ -1,7 +1,5 @@
 # 📧 Email Finder  
 
-![Email Finder Logo](mail-search.svg)
-
 **Email Finder** is a web application that helps generate professional email addresses from names and a company domain ✉️🌍. The app supports multiple common email formats and offers multilingual support (French, English, Spanish) 🌐.
 
 🔗 **You can test it live here**: [https://email-finder-web.netlify.app](https://email-finder-web.netlify.app) 🚀
