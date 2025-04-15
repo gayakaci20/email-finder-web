@@ -1,6 +1,6 @@
 # 📧 Email Finder  
 
-![Email Finder Logo](data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM0QjU1RkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1tYWlsLXNlYXJjaC1pY29uIGx1Y2lkZS1tYWlsLXNlYXJjaCI+PHBhdGggZD0iTTIyIDEyLjVWNmEyIDIgMCAwIDAtMi0ySDRhMiAyIDAgMCAwLTIgMnYxMmMwIDEuMS45IDIgMiAyaDcuNSIvPjxwYXRoIGQ9Im0yMiA3LTguOTcgNS43YTEuOTQgMS45NCAwIDAgMS0yLjA2IDBMMiA3Ii8+PHBhdGggZD0iTTE4IDIxYTMgMyAwIDEgMCAwLTYgMyAzIDAgMCAwIDAgNloiLz48Y2lyY2xlIGN4PSIxOCIgY3k9IjE4IiByPSIzIi8+PHBhdGggZD0ibTIyIDIyLTEuNS0xLjUiLz48L3N2Zz4=)
+![Email Finder Logo](mail-search.svg)
 
 **Email Finder** is a web application that helps generate professional email addresses from names and a company domain ✉️🌍. The app supports multiple common email formats and offers multilingual support (French, English, Spanish) 🌐.
 
