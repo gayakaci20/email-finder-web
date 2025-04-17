@@ -235,4 +235,170 @@ document.addEventListener('DOMContentLoaded', () => {
         allEmailsDiv.appendChild(copyAllButton);
         resultsContainer.appendChild(allEmailsDiv);
     });
-}); 
+});
+
+// Store for managing people
+let people = [];
+
+// DOM Elements
+const form = document.getElementById('personForm');
+const peopleList = document.getElementById('peopleList');
+const resultsContainer = document.getElementById('resultsContainer');
+const generateEmailsButton = document.getElementById('generateEmails');
+
+// Add person to the list
+function addPerson(event) {
+    event.preventDefault();
+    
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName = document.getElementById('lastName').value.trim();
+    const domain = document.getElementById('domain').value.trim();
+    
+    if (!firstName || !lastName || !domain) {
+        alert('Veuillez remplir tous les champs');
+        return;
+    }
+    
+    const person = {
+        id: Date.now(),
+        firstName,
+        lastName,
+        domain
+    };
+    
+    people.push(person);
+    updatePeopleList();
+    form.reset();
+}
+
+// Remove person from the list
+function removePerson(id) {
+    people = people.filter(person => person.id !== id);
+    updatePeopleList();
+    generateEmailSuggestions();
+}
+
+// Update the people list display
+function updatePeopleList() {
+    peopleList.innerHTML = '';
+    
+    if (people.length === 0) {
+        peopleList.innerHTML = `
+            <div class="p-3 sm:p-4 border border-gray-200 rounded-lg">
+                <p class="text-sm sm:text-base text-gray-600" data-i18n="noResults">
+                    Aucune personne ajoutée. Utilisez le formulaire ci-dessus pour ajouter des personnes.
+                </p>
+            </div>
+        `;
+        return;
+    }
+    
+    people.forEach(person => {
+        const personElement = document.createElement('div');
+        personElement.className = 'flex items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg mb-2';
+        personElement.innerHTML = `
+            <div class="flex-grow">
+                <p class="text-sm sm:text-base font-medium">${person.firstName} ${person.lastName}</p>
+                <p class="text-xs sm:text-sm text-gray-500">@${person.domain}</p>
+            </div>
+            <button 
+                onclick="removePerson(${person.id})"
+                class="ml-4 text-red-600 hover:text-red-800 transition duration-200"
+            >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+        `;
+        peopleList.appendChild(personElement);
+    });
+}
+
+// Generate email patterns for a person
+function generateEmailPatterns(person) {
+    const firstName = person.firstName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const lastName = person.lastName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const domain = person.domain.toLowerCase();
+    
+    return [
+        `${firstName}.${lastName}@${domain}`,
+        `${firstName}${lastName}@${domain}`,
+        `${firstName[0]}.${lastName}@${domain}`,
+        `${firstName}@${domain}`,
+        `${lastName}.${firstName}@${domain}`,
+        `${lastName}${firstName}@${domain}`,
+        `${firstName[0]}${lastName}@${domain}`,
+        `${lastName[0]}.${firstName}@${domain}`,
+        `${firstName[0]}${lastName[0]}@${domain}`
+    ];
+}
+
+// Generate email suggestions
+function generateEmailSuggestions() {
+    if (people.length === 0) {
+        resultsContainer.innerHTML = `
+            <div class="p-3 sm:p-4 border border-gray-200 rounded-lg">
+                <p class="text-sm sm:text-base text-gray-600" data-i18n="noResults">
+                    Ajoutez des personnes pour générer des suggestions d'emails.
+                </p>
+            </div>
+        `;
+        return;
+    }
+
+    const allEmails = [];
+    const suggestions = people.map(person => {
+        const patterns = generateEmailPatterns(person);
+        allEmails.push(...patterns);
+        return {
+            name: `${person.firstName} ${person.lastName}`,
+            domain: person.domain,
+            patterns
+        };
+    });
+
+    resultsContainer.innerHTML = `
+        <div class="space-y-4">
+            ${suggestions.map(suggestion => `
+                <div class="p-3 sm:p-4 border border-gray-200 rounded-lg">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-sm sm:text-base font-medium">${suggestion.name} (@${suggestion.domain})</h3>
+                        <button 
+                            onclick="copyToClipboard('${suggestion.patterns.join('\\n')}')"
+                            class="text-blue-600 hover:text-blue-800 transition duration-200"
+                            title="Copier les emails"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                        </button>
+                    </div>
+                    <ul class="space-y-1">
+                        ${suggestion.patterns.map(pattern => `
+                            <li class="text-sm sm:text-base text-gray-600">${pattern}</li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('')}
+            <div class="flex justify-end mt-4">
+                <button 
+                    onclick="copyToClipboard('${allEmails.join('\\n')}')"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                    </svg>
+                    Copier tous les emails
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Event Listeners
+form.addEventListener('submit', addPerson);
+generateEmailsButton.addEventListener('click', generateEmailSuggestions);
+
+// Initialize the display
+updatePeopleList();
+generateEmailSuggestions(); 
