@@ -333,6 +333,33 @@ function generateEmailPatterns(person) {
     ];
 }
 
+// Copy text to clipboard with visual feedback
+async function copyToClipboard(text, button) {
+    try {
+        await navigator.clipboard.writeText(text);
+        
+        // Change button appearance temporarily
+        const originalContent = button.innerHTML;
+        button.innerHTML = `
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        `;
+        button.classList.add('text-green-600');
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+            button.innerHTML = originalContent;
+            button.classList.remove('text-green-600');
+        }, 2000);
+        
+        return true;
+    } catch (err) {
+        console.error('Failed to copy text: ', err);
+        return false;
+    }
+}
+
 // Generate email suggestions
 function generateEmailSuggestions() {
     if (people.length === 0) {
@@ -359,12 +386,12 @@ function generateEmailSuggestions() {
 
     resultsContainer.innerHTML = `
         <div class="space-y-4">
-            ${suggestions.map(suggestion => `
+            ${suggestions.map((suggestion, index) => `
                 <div class="p-3 sm:p-4 border border-gray-200 rounded-lg">
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="text-sm sm:text-base font-medium">${suggestion.name} (@${suggestion.domain})</h3>
                         <button 
-                            onclick="copyToClipboard('${suggestion.patterns.join('\\n')}')"
+                            id="copy-person-${index}"
                             class="text-blue-600 hover:text-blue-800 transition duration-200"
                             title="Copier les emails"
                         >
@@ -382,7 +409,7 @@ function generateEmailSuggestions() {
             `).join('')}
             <div class="flex justify-end mt-4">
                 <button 
-                    onclick="copyToClipboard('${allEmails.join('\\n')}')"
+                    id="copy-all"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200 flex items-center gap-2"
                 >
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -393,6 +420,24 @@ function generateEmailSuggestions() {
             </div>
         </div>
     `;
+
+    // Add click handlers for copy buttons
+    suggestions.forEach((suggestion, index) => {
+        const copyButton = document.getElementById(`copy-person-${index}`);
+        if (copyButton) {
+            copyButton.addEventListener('click', () => {
+                copyToClipboard(suggestion.patterns.join('\n'), copyButton);
+            });
+        }
+    });
+
+    // Add click handler for copy all button
+    const copyAllButton = document.getElementById('copy-all');
+    if (copyAllButton) {
+        copyAllButton.addEventListener('click', () => {
+            copyToClipboard(allEmails.join('\n'), copyAllButton);
+        });
+    }
 }
 
 // Event Listeners
